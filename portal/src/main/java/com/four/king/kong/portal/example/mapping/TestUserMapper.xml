@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.four.king.kong.portal.example.dao.IDebugDao">
+    <!--<resultMap id="UserResultMap" type="com.four.king.kong.model.TestUser">-->
+    <!--<id column="userId" property="USER_ID" jdbcType="BIGINT"/>-->
+    <!--<result column="userName" property="USER_NAME" jdbcType="VARCHAR"/>-->
+    <!--<result column="password" property="PASSWORD" jdbcType="VARCHAR"/>-->
+    <!--</resultMap>-->
+
+    <select id="pagingQueryUser" resultType="user" parameterType="userForm">
+        <!--特殊字符的语句放在 <![CDATA[   ]]>-->
+        <!--user userForm是configuration.xml 注解设置的别名-->
+        <![CDATA[select * from t_sys_user t]]>
+        <where>
+            <if test="userName != null and userName!=''">
+                and UPPER(t.USER_NAME) LIKE UPPER(CONCAT('%', #{userName}, '%'))
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertOneUser" parameterType="user">
+        INSERT INTO t_sys_user ( USER_ID, USER_NAME, PASSWORD )
+        VALUES
+        (
+        #{userId,jdbcType=BIGINT},
+        #{userName,jdbcType=VARCHAR},
+        #{password,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <insert id="batchInsertUsers" parameterType="java.util.List">
+        INSERT INTO t_sys_user ( USER_ID, USER_NAME, PASSWORD )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.userId,jdbcType=BIGINT},
+            #{item.userName,jdbcType=VARCHAR},
+            #{item.password,jdbcType=VARCHAR}
+            )
+        </foreach>
+    </insert>
+
+    <update id="updateOneUser" parameterType="user">
+        UPDATE t_sys_user t
+        SET
+        USER_NAME = #{userName,jdbcType=VARCHAR},
+        PASSWORD = #{password,jdbcType=VARCHAR}
+        WHERE
+        t.USER_ID = #{userId,jdbcType=BIGINT}
+    </update>
+
+    <update id="batchUpdateUsers">
+        <foreach collection="users" index="index" item="item" separator=";">
+        UPDATE t_sys_user t
+        SET
+        USER_NAME = #{item.userName,jdbcType=VARCHAR},
+        PASSWORD = #{item.password,jdbcType=VARCHAR}
+        WHERE
+        t.USER_ID = #{item.userId,jdbcType=BIGINT}
+        </foreach>
+    </update>
+
+    <delete id="deleteOneUser">
+        DELETE
+        FROM
+        t_sys_user
+        WHERE
+        USER_ID =#{userId,jdbcType=BIGINT}
+    </delete>
+
+    <delete id="batchDeleteUsers">
+        DELETE
+        FROM
+        t_sys_user
+        WHERE
+        USER_ID IN
+        <foreach collection="userIds" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+</mapper>

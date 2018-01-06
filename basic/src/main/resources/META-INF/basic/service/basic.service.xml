@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+                http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+                http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+                http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd"
+       default-lazy-init="true">
+
+    <!--<alias name="shiro.shiroDao" alias="basic.userService" />-->
+
+    <bean id="basic.propertyConfigure" class="com.four.king.kong.basic.core.service.support.CustomPropertyPlaceholderConfigurer">
+        <property name="fileEncoding" value="UTF-8" />
+        <property name="locations">
+            <list>
+                <value>classpath*:/META-INF/*/*.properties</value>
+                <value>classpath*:*.properties</value>
+                <value>/WEB-INF/classes/*.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean class="com.four.king.kong.basic.utils.PropsUtils.Resolver" lazy-init="false" />
+    <bean class="com.four.king.kong.basic.utils.bean.ServiceUtils.Resolver" lazy-init="false" />
+    <bean class="com.four.king.kong.basic.utils.bean.ServiceUtils.Listener" lazy-init="false">
+        <property name="executor" ref="basic.scheduler" />
+    </bean>
+
+    <bean id="basic.scheduler" class="org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler">
+        <property name="poolSize" value="${basic.scheduler.poolSize}" />
+        <property name="threadNamePrefix" value="${basic.scheduler.threadNamePrefix}" />
+    </bean>
+
+    <bean id="basic.tempService" class="com.four.king.kong.basic.core.service.support.TempServiceImpl" lazy-init="false">
+        <property name="scheduler" ref="basic.scheduler" />
+        <property name="root" value="${basic.temp.root}" />
+    </bean>
+
+    <bean id="basic.defaultJdbcPasswordDecoder" class="com.four.king.kong.basic.core.service.support.DefaultJdbcPasswordDecoderImpl" />
+
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+          init-method="init" destroy-method="close">
+        <property name="driverClassName" value="${jdbc.driver}" />
+        <property name="url" value="${jdbc.url}" />
+        <property name="username" value="${jdbc.username}" />
+        <property name="password">
+            <bean class="com.four.king.kong.basic.core.service.support.JdbcPasswordDecoderFactory">
+                <property name="jdbcPasswordDecoder" ref="basic.defaultJdbcPasswordDecoder" />
+                <property name="password" value="${jdbc.password}" />
+            </bean>
+        </property>
+
+
+        <!-- 初始化连接大小 -->
+        <property name="initialSize" value="${initialSize}"/>
+        <!-- 校验 -->
+        <property name="validationQuery" value="${validationQuery.value}" />
+        <!-- 连接池最大数量 -->
+        <property name="maxActive" value="${maxActive}"/>
+        <!-- 连接池最小空闲 -->
+        <property name="minIdle" value="${minIdle}"/>
+        <!-- 获取连接最大等待时间 -->
+        <property name="maxWait" value="${maxWait}"/>
+        <!-- 是否自动回收超时连接 -->
+        <property name="removeAbandoned" value="true" />
+
+    </bean>
+
+    <!-- spring和MyBatis完美整合，不需要mybatis配置映射文件 -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="configLocation" value="classpath:/META-INF/basic/configuration.xml"/>
+        <!-- 自动扫描mapping.xml文件 -->
+        <property name="mapperLocations" value="classpath*:com/four/king/kong/**/mapping/*.xml"/>
+        <property name="plugins">
+            <array>
+                <bean class="com.github.pagehelper.PageInterceptor">
+                    <property name="properties">
+                        <value>
+                            helperDialect=mysql
+                            reasonable=true
+                        </value>
+                    </property>
+                </bean>
+            </array>
+        </property>
+    </bean>
+
+    <!-- DAO接口所在包名，Spring会自动查找其下的类 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.four.king.kong.**.dao" />
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+    </bean>
+
+    <!-- (事务管理)transaction manager, use JtaTransactionManager for global tx -->
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+    <!-- 启动spring注解功能注解事务,标注@Transactional的类和方法将具有事务性 -->
+    <tx:annotation-driven transaction-manager="transactionManager" />
+</beans>

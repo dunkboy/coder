@@ -1,0 +1,8 @@
+rootProject.name = 'coder'
+
+include "basic"
+include "model"
+include "portal"
+
+
+

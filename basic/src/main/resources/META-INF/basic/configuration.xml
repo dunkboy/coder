@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD SQL MAP Config 3.1//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+        <setting name="callSettersOnNulls" value="true"/>
+        <!--驼峰自动转换 数据库字段名FUNC_ID对应javabean属性funcId 规则一致才可以转换-->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+    <!--通过package, 可以直接指定package的名字， mybatis会自动扫描你指定包下面的javabean,
+    并且默认设置一个别名，默认的名字为： javabean 的首字母小写的非限定类名来作为它的别名。
+    也可在javabean 加上注解@Alias 来自定义别名， 例如： @Alias("user")-->
+    <typeAliases>
+        <package name="com.four.king.kong.model"/>
+    </typeAliases>
+</configuration>

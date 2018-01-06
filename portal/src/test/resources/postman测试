@@ -1,0 +1,48 @@
+//
+GET http://localhost:8085/api/v1/example/media?id=laozhang/1.jpg
+
+GET http://localhost:8085/api/v1/example/users?pageNum=1&pageSize=10
+
+POST http://localhost:8085/api/v1/example/user
+{
+   "userId": 2,
+        "userName": "aaa",
+        "password": "bbbb"
+}
+
+POST http://localhost:8085/api/v1/example/users
+[
+    {
+   "userId": 21,
+        "userName": "aaa",
+        "password": "bbbb"
+},{
+   "userId": 22,
+        "userName": "aaa",
+        "password": "bbbb"
+}]
+
+PUT http://localhost:8085/api/v1/example/user
+{
+   "userId": 2,
+        "userName": "2222222222222",
+        "password": "222222222222"
+}
+
+PUT http://localhost:8085/api/v1/example/users
+[
+    {
+   "userId": 22,
+        "userName": "2222222222222",
+        "password": "222222222222"
+},{
+   "userId": 21,
+        "userName": "2222222222222",
+        "password": "222222222222"
+}]
+
+DELETE http://localhost:8085/api/v1/example/user?userId=2
+
+DELETE http://localhost:8085/api/v1/example/users
+[21,22
+    ]
