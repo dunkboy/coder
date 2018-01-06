@@ -7,7 +7,7 @@ import com.four.king.kong.model.form.TestForm;
 /**
  * <p>Title: IDebugService</p>
  * <p>Description: IDebugService</p>
- * <p>Copyright:Copyright(c) sefon 2017</p>
+ * <p>Copyright:Copyright(c) coder 2017</p>
  * <p>Company: four king kong</p>
  * <p>CreateTime: 2018/1/6 13:45</p>
  *

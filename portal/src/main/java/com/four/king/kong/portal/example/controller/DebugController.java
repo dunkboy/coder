@@ -20,7 +20,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 /**
  * <p>Title: DebugController</p>
  * <p>Description: DebugController</p>
- * <p>Copyright:Copyright(c) sefon 2017</p>
+ * <p>Copyright:Copyright(c) coder 2017</p>
  * <p>Company: xxx</p>
  * <p>CreateTime: 2018/1/6 12:05</p>
  *

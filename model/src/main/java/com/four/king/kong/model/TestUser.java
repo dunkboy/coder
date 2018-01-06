@@ -5,7 +5,7 @@ import org.apache.ibatis.type.Alias;
 /**
  * <p>Title: TestUser</p>
  * <p>Description: TestUser</p>
- * <p>Copyright:Copyright(c) sefon 2017</p>
+ * <p>Copyright:Copyright(c) coder 2017</p>
  * <p>Company: four king kong</p>
  * <p>CreateTime: 2018/1/6 12:26</p>
  *

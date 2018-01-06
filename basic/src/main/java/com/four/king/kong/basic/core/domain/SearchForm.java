@@ -3,7 +3,7 @@ package com.four.king.kong.basic.core.domain;
 /**
  * <p>Title: SearchForm</p>
  * <p>Description: SearchForm</p>
- * <p>Copyright:Copyright(c) sefon 2017</p>
+ * <p>Copyright:Copyright(c) coder 2017</p>
  * <p>Company: xxx</p>
  * <p>CreateTime: 2017/8/21 12:19</p>
  *

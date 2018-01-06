@@ -6,7 +6,7 @@ import org.apache.ibatis.type.Alias;
 /**
  * <p>Title: TestForm</p>
  * <p>Description: TestForm</p>
- * <p>Copyright:Copyright(c) sefon 2017</p>
+ * <p>Copyright:Copyright(c) xxx 2017</p>
  * <p>Company: four king kong</p>
  * <p>CreateTime: 2018/1/6 12:30</p>
  *
