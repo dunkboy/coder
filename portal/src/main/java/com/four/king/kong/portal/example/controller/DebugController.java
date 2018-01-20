@@ -9,10 +9,12 @@ import com.four.king.kong.portal.example.dao.IDebugDao;
 import com.four.king.kong.portal.example.service.IDebugService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.*;
@@ -60,10 +62,14 @@ public class DebugController extends BasicController
     }
 
     @RequestMapping(method = POST, value = "/user", consumes = {BasicController.APPLICATION_JSON_UTF8_VALUE}, produces = {BasicController.APPLICATION_JSON_UTF8_VALUE})
-    public Status saveOneUser(@RequestBody TestUser user)
+    public Status saveOneUser(@RequestBody @Valid TestUser user, BindingResult result)
     {
         try
         {
+            if (result.hasErrors())
+            {
+                return new Status(Status.FALSE, result.getFieldError().getDefaultMessage());
+            }
             debugDao.insertOneUser(user);
         }
         catch (Exception e)

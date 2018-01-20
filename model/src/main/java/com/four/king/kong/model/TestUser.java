@@ -2,6 +2,8 @@ package com.four.king.kong.model;
 
 import org.apache.ibatis.type.Alias;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * <p>Title: TestUser</p>
  * <p>Description: TestUser</p>
@@ -16,7 +18,9 @@ import org.apache.ibatis.type.Alias;
 public class TestUser
 {
     private Long userId;
+    @NotNull(message = "{messages.example.testuser.name}")
     private String userName;
+    @NotNull(message = "{messages.example.testuser.passwd}")
     private String password;
 
     public Long getUserId()
